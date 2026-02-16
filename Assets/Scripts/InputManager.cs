@@ -12,6 +12,8 @@ public class InputManager : MonoBehaviour
     public event EventHandler Down;
     public event EventHandler Left;
     public event EventHandler Right;
+    public event EventHandler Inverted;
+
 
     void Awake()
     {
@@ -29,6 +31,7 @@ public class InputManager : MonoBehaviour
         inputActions.Player.Down.performed += Down_performed;
         inputActions.Player.Left.performed += Left_performed;
         inputActions.Player.Right.performed += Right_performed;
+        inputActions.Player.Invert.performed += Invert_performed;
     }
 
     private void Left_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
@@ -57,5 +60,8 @@ public class InputManager : MonoBehaviour
         Jumped?.Invoke(this, EventArgs.Empty);
     }
 
-    
+    private void Invert_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        Inverted?.Invoke(this, EventArgs.Empty);
+    }
 }

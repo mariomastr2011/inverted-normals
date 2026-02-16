@@ -12,24 +12,16 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] List<Colors> colorsList;
-    [SerializeField] Transform environmentParent;
+    [SerializeField] EnvColorManager envColorManager;
 
-    private Dictionary<int, Color> colorsDict = new Dictionary<int, Color>();
-    private int currentColorIndex = 0;
+    private bool isInverted = false;
 
     void Start()
     {
-        foreach(Transform envTransform in environmentParent)
-        {
-            envTransform.gameObject.GetComponent<Renderer>().material.color = colorsList[currentColorIndex].color;
-        }
+        envColorManager.SetColors(colorsList[0].color, colorsList[1].color);
 
-        int i = 0;
         foreach(Colors color in colorsList)
         {
-            colorsDict.Add(i, color.color);
-            i++;
-
             foreach(GameObject box in color.boxes)
             {
                 box.GetComponent<Renderer>().material.color = color.color;
@@ -41,18 +33,18 @@ public class GameManager : MonoBehaviour
 
     private void InputManager_Inverted(object sender, EventArgs e)
     {
-        currentColorIndex++;
-        if(currentColorIndex > colorsList.Count - 1)
+        isInverted = !isInverted;
+        if(isInverted)
         {
-            currentColorIndex = 0;
+            ChangeEnvColor(colorsList[1].color);
         }
-
-        Debug.Log(currentColorIndex);
-        Debug.Log(colorsList.Count - 1);
-
-        foreach(Transform envTransform in environmentParent)
+        else
         {
-            envTransform.gameObject.GetComponent<Renderer>().material.color = colorsList[currentColorIndex++].color;
+            ChangeEnvColor(colorsList[0].color);
         }
+    }
+
+    private void ChangeEnvColor(Color color){
+        envColorManager.DoColorLerp(isInverted);
     }
 }

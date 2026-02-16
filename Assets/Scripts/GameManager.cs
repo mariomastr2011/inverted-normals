@@ -16,7 +16,10 @@ public class GameManager : MonoBehaviour
     {
         foreach(Colors color in colorsList)
         {
-            Debug.Log(color.color);
+            foreach(GameObject box in color.boxes)
+            {
+                box.GetComponent<Renderer>().material.color = color.color;
+            }
         }
     }
 }

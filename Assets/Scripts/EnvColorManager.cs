@@ -11,9 +11,7 @@ public class EnvColorManager : MonoBehaviour
 
     void Update()
     {
-        
-
-        if (!isInverted)
+        if(isInverted)
         {
             foreach(Transform transform in transform)
             {
@@ -35,7 +33,7 @@ public class EnvColorManager : MonoBehaviour
     {
         foreach(Transform transform in transform)
         {
-            transform.GetComponent<Renderer>().material.color = color1;
+            transform.GetComponent<Renderer>().material.color = color2;
         }
 
         this.color1 = color1;

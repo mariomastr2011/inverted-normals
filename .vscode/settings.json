@@ -67,5 +67,8 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "inverted_normals.slnx"
+    "dotnet.defaultSolution": "inverted_normals.slnx",
+    "cSpell.words": [
+        "Mathf"
+    ]
 }

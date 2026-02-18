@@ -14,10 +14,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<Colors> colorsList;
     [SerializeField] EnvColorManager envColorManager;
 
+    public static GameManager instance;
+    public event EventHandler OnInverted;
+
     private bool isInverted = false;
 
-    void Start()
+    void Awake()
     {
+        instance = this;
+
         envColorManager.SetColors(colorsList[0].color, colorsList[1].color);
 
         foreach(Colors color in colorsList)
@@ -27,7 +32,10 @@ public class GameManager : MonoBehaviour
                 box.GetComponent<Renderer>().material.color = color.color;
             }
         }
+    }
 
+    void Start()
+    {
         InputManager.instance.Inverted += InputManager_Inverted;
     }
 
@@ -36,15 +44,31 @@ public class GameManager : MonoBehaviour
         isInverted = !isInverted;
         if(isInverted)
         {
-            ChangeEnvColor(colorsList[1].color);
+            ChangeEnvColor(colorsList[0].color);
         }
         else
         {
-            ChangeEnvColor(colorsList[0].color);
+            ChangeEnvColor(colorsList[1].color);
         }
+        OnInverted?.Invoke(this, EventArgs.Empty);
     }
 
     private void ChangeEnvColor(Color color){
         envColorManager.DoColorLerp(isInverted);
+    }
+
+    public List<GameObject> GetWhiteCubes()
+    {
+        return colorsList[0].boxes;
+    }
+
+    public List<GameObject> GetGreyCubes()
+    {
+        return colorsList[1].boxes;
+    }
+
+    public bool IsInverted()
+    {
+        return isInverted;
     }
 }
